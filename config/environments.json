@@ -1,0 +1,109 @@
+{
+  "global_config": {
+    "notifications": {
+      "default_distribution_list": "global-ops-alerts@cls-services.com",
+      "email_enabled": true
+    },
+    "vault_config": {
+      "token_auth_url": "https://cls.delinea.app/identity/api/oauth2/token/xpmplatform",
+      "secret_fetch_url_base": "https://cls.secretservercloud.com/api/v1/secrets"
+    },
+    "app_defaults": {
+      "Core": {
+        "path": "/cls/appl/clsnet/opsscripts",
+        "user": "netapp"
+      },
+      "UCP": {
+        "path": "/cls/appl/ucp/tomcat_bank/tomcat_conf/conf",
+        "user": "tomcat"
+      },
+      "UGA": {
+        "path": "/cls/appl/usergateway/tomcat_bank/tomcat_conf/conf",
+        "user": "tomcat"
+      },
+      "TradeAPI": {
+        "path": "/cls/appl/tradeapi/tomcat_bank/tomcat_conf/conf",
+        "user": "tomcat"
+      },
+      "SupportUI": {
+        "path": "/cls/appl/supportui/tomcat_supportui/tomcat_conf/conf",
+        "user": "tomcat"
+      }
+    }
+  },
+  "SIT01": {
+    "enabled": true,
+    "jobs": {
+      "MQ": "Deploy-MQ",
+      "MIDDLEWARE": "APPNet_Start_Stop_Pipeline"
+    }
+  },
+  "SIT02": {
+    "enabled": true,
+    "application_sequence": [
+      "UCP",
+      "UGA",
+      "TradeAPI",
+      "Core"
+    ],
+    "notifications": {
+      "distribution_list": "euro-ops-team@example.com, escalation-manager@example.com"
+    },
+    "app": {
+      "Core": {
+        "sid": "22074",
+        "instances": [
+          "new2lntct2cbs20"
+        ],
+        "components": [
+          "OGW01",
+          "OGW03",
+          "OGW02",
+          "CHP01",
+          "CHP02",
+          "CHP03",
+          "gridprocessorcontroller",
+          "GPE01",
+          "GPE02",
+          "clsm",
+          "IGW01",
+          "IGW02",
+          "fundprocessor"
+        ]
+      },
+      "UCP": {
+        "sid": "22073",
+        "instances": [],
+        "components": [
+          "bank"
+        ]
+      },
+      "UGA": {
+        "path": "/cls/appl/usergateway/tomcat_bank/custom_path/conf",
+        "user": "custom_tomcat",
+        "sid": "22039",
+        "instances": [
+          "new2lntct2uga20"
+        ],
+        "components": [
+          "bank",
+          "member"
+        ]
+      },
+      "TradeAPI": {
+        "sid": "22039",
+        "instances": [],
+        "components": [
+          "bank"
+        ]
+      },
+      "SupportUI": {
+        "sid": "22039",
+        "instances": [],
+        "components": [
+          "bank"
+        ]
+      }
+    }
+  }
+}
