@@ -7,8 +7,8 @@
  * Usage:
  *   ectool evalDsl --dslFile projects/APPNet/project.groovy
  *
- * IMPORTANT: After evaluating this DSL, update the 'delinea-svc-account'
- * credential with actual client_id and client_secret values via the CD/RO UI.
+ * IMPORTANT: After evaluating this DSL, update placeholder credential values
+ * with actual secrets via the CD/RO UI.
  * Never commit real credentials to source control.
  */
 
@@ -31,6 +31,23 @@ project 'APPNet', {
     }
 
     // -------------------------------------------------------------------------
+    // GitHub SSH Credential
+    // -------------------------------------------------------------------------
+    // Used by the EC-Git plugin to clone the cdro-pipeline repository.
+    //
+    // userName  = git (the standard SSH username for GitHub)
+    // password  = SSH private key content (PEM format, begins with -----BEGIN...)
+    //
+    // IMPORTANT: After evaluating this DSL, update 'cdro-git-ssh' in the
+    // CD/RO UI with your actual SSH private key. Never commit real keys.
+    // -------------------------------------------------------------------------
+    credential 'cdro-git-ssh', {
+        description = 'SSH private key for cloning the cdro-pipeline Git repository'
+        userName    = 'git'
+        password    = 'PLACEHOLDER_SSH_PRIVATE_KEY'
+    }
+
+
     // Email Configuration Reference
     // -------------------------------------------------------------------------
     // The pipeline uses 'APPNet-Email-Config' as the email configuration name.

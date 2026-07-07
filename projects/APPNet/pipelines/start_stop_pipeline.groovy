@@ -91,25 +91,17 @@ project 'APPNet', {
             workspaceName = 'default'
 
             task 'Checkout Source Code', {
-                description = 'Clones or resets the repository to the workspace root'
-                taskType    = 'COMMAND'
-                command     = '''#!/bin/bash
-                    set -euo pipefail
-
-                    REPO_URL="git@github.com:pavangk7/cdro-pipeline.git"
-
-                    echo "Checking git workspace..."
-                    if [ -d .git ]; then
-                        echo "Repository exists. Performing fetch and clean reset..."
-                        git remote set-url origin "$REPO_URL"
-                        git fetch origin
-                        git reset --hard origin/main
-                    else
-                        echo "Cloning repository from $REPO_URL..."
-                        git clone "$REPO_URL" .
-                    fi
-                '''
-                shell = '/bin/bash'
+                description  = 'Clones the cdro-pipeline repository using the EC-Git plugin'
+                taskType     = 'PROCEDURE'
+                subproject   = '/plugins/EC-Git/project'
+                subprocedure = 'Clone'
+                actualParameter 'repoUrl',        'git@github.com:pavangk7/cdro-pipeline.git'
+                actualParameter 'branch',         'main'
+                actualParameter 'clone',          '1'
+                actualParameter 'credentials',    '/projects/APPNet/credentials/cdro-git-ssh'
+                actualParameter 'depth',          '0'
+                actualParameter 'destinationDir', '.'
+                actualParameter 'GitAuthType',    'key'
             }
 
             task 'Parse Environment Config', {
