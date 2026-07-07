@@ -17,6 +17,7 @@
 project 'APPNet', {
 
   procedure 'SSH-Start-Services', {
+    workspaceName = 'default'
     description = 'Start application components on a remote server via SSH (in reverse stop-order)'
 
     // ── Input Parameters ──────────────────────────────────────────────

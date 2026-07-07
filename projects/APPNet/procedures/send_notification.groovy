@@ -16,6 +16,7 @@
 project 'APPNet', {
 
   procedure 'Send-Notification', {
+    workspaceName = 'default'
     description = 'Send an email notification with pipeline stop/start results'
 
     // ── Input Parameters ──────────────────────────────────────────────

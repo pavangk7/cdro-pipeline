@@ -16,6 +16,7 @@
 
 procedure 'Parse-Config', {
     projectName = 'APPNet'
+    workspaceName = 'default'
     description = 'Reads environments.json and resolves the full configuration for a selected environment.'
 
     // -----------------------------------------------------------------------

@@ -8,6 +8,7 @@
 
 procedure 'SSH-Check-Status', {
     projectName = 'APPNet'
+    workspaceName = 'default'
     description = 'Connects to a remote server via SSH and checks the status of application components.'
 
     // -----------------------------------------------------------------------

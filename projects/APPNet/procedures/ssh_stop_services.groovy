@@ -8,6 +8,7 @@
 project 'APPNet', {
 
   procedure 'SSH-Stop-Services', {
+    workspaceName = 'default'
     description = 'Stop application components on a remote server via SSH'
 
     // ── Input Parameters ──────────────────────────────────────────────

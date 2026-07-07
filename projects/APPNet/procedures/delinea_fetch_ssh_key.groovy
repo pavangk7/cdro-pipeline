@@ -15,6 +15,7 @@
 
 procedure 'Delinea-Fetch-SSH-Key', {
     projectName = 'APPNet'
+    workspaceName = 'default'
     description = 'Authenticates with Delinea and fetches an SSH private key by secret ID.'
 
     // Attach the credential so it is available to steps via ectool getFullCredential

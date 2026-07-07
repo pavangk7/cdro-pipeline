@@ -21,6 +21,15 @@ project 'APPNet', {
         description = 'Orchestrates stopping and starting of CLS middleware services with sequenced component management and Delinea SSH key integration'
 
         // =====================================================================
+        // Pipeline Triggers
+        // =====================================================================
+        trigger 'bitbucket-push', {
+            description = 'Triggered automatically on push events to the Bitbucket repository'
+            pluginKey   = 'EC-Bitbucket'
+            triggerType = 'webhook'
+        }
+
+        // =====================================================================
         // Pipeline Parameters
         // =====================================================================
 
@@ -64,12 +73,44 @@ project 'APPNet', {
             required     = '0'
         }
 
+        formalParameter 'agentResource', {
+            type         = 'entry'
+            label        = 'Agent Resource'
+            description  = 'CD/RO Agent Resource to run pipeline steps and scripts'
+            defaultValue = 'local'
+            required     = '1'
+        }
+
         // =====================================================================
         // Stage 1: Initialize
         // =====================================================================
         stage 'Initialize', {
             description = 'Parse configuration, validate environment, and resolve application sequence'
             colorCode   = '#289ce1'
+            resourceName  = '$[agentResource]'
+            workspaceName = 'default'
+
+            task 'Checkout Source Code', {
+                description = 'Clones or resets the repository to the workspace root'
+                taskType    = 'COMMAND'
+                command     = '''#!/bin/bash
+                    set -euo pipefail
+
+                    REPO_URL="git@github.com:pavangk7/cdro-pipeline.git"
+
+                    echo "Checking git workspace..."
+                    if [ -d .git ]; then
+                        echo "Repository exists. Performing fetch and clean reset..."
+                        git remote set-url origin "$REPO_URL"
+                        git fetch origin
+                        git reset --hard origin/main
+                    else
+                        echo "Cloning repository from $REPO_URL..."
+                        git clone "$REPO_URL" .
+                    fi
+                '''
+                shell = '/bin/bash'
+            }
 
             task 'Parse Environment Config', {
                 description   = 'Read environments.json and resolve the full configuration for the selected environment'
@@ -103,6 +144,8 @@ project 'APPNet', {
         stage 'Execute Action', {
             description = 'Fetch SSH keys from Delinea, connect to instances, and execute stop/start/status operations'
             colorCode   = '#ff7f0e'
+            resourceName  = '$[agentResource]'
+            workspaceName = 'default'
 
             gate 'PRE', {
                 task 'Check Init Success', {
@@ -152,6 +195,8 @@ project 'APPNet', {
         stage 'Notify', {
             description = 'Send email notification with pipeline results'
             colorCode   = '#2ca02c'
+            resourceName  = '$[agentResource]'
+            workspaceName = 'default'
 
             task 'Send Email Notification', {
                 description = 'Send notification email to the distribution list'

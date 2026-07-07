@@ -39,4 +39,5 @@ project 'APPNet', {
     // with your SMTP server details.
     // -------------------------------------------------------------------------
     property 'emailConfigName', value: 'APPNet-Email-Config'
+
 }
